@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Question desk</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2e0510">
+<link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Montserrat:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@1,800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/desk.css">
+</head>
+<body class="page-desk">
+
+<div class="backdrop" aria-hidden="true">
+  <img class="backdrop-mark" src="assets/logo-watermark.png" alt="" width="720" height="720">
+</div>
+
+<div class="demo-flag" id="demoFlag" hidden>Preview mode: questions stay in this browser until Firebase is set up in js/config.js.</div>
+
+<section class="gate" id="gate">
+  <form class="panel login" id="loginForm">
+    <img class="logo" src="assets/favicon.png" alt="">
+    <h1>Question desk</h1>
+    <p class="lead">Sign in to see questions as they arrive.</p>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="pw">Password</label>
+      <input id="pw" type="password" autocomplete="current-password" required>
+    </div>
+    <p class="note is-info" id="loginHint" hidden>Preview mode: use any email and the password <strong>demo</strong>.</p>
+    <p class="note" id="loginNote" role="alert" hidden></p>
+    <button class="btn" id="loginBtn" type="submit">Sign in</button>
+  </form>
+</section>
+
+<div class="desk" id="desk" hidden>
+  <header class="bar">
+    <div class="bar-title">
+      <img src="assets/favicon.png" alt="">
+      <div>
+        <h1>Question desk</h1>
+        <p class="status" id="status">Connecting&hellip;</p>
+      </div>
+    </div>
+    <div class="bar-actions">
+      <label class="switch">
+        <input type="checkbox" id="openSwitch" role="switch" checked>
+        <span class="track" aria-hidden="true"></span>
+        <span id="openLabel">Accepting questions</span>
+      </label>
+      <a class="btn-quiet" href="screen.html" target="_blank" rel="noopener">Big screen</a>
+      <button class="btn-quiet" id="signOut" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="toolbar">
+      <div class="tabs" role="group" aria-label="Show questions">
+        <button type="button" data-filter="new" aria-pressed="true">New <span class="n" id="nNew">0</span></button>
+        <button type="button" data-filter="read" aria-pressed="false">Read <span class="n" id="nRead">0</span></button>
+        <button type="button" data-filter="all" aria-pressed="false">All <span class="n" id="nAll">0</span></button>
+      </div>
+      <div class="tools">
+        <button class="btn-quiet" id="sortBtn" type="button">Newest first</button>
+        <button class="btn-quiet" id="printList" type="button">Print list</button>
+      </div>
+    </div>
+
+    <div class="print-head">
+      <p class="ph-org" id="phOrg"></p>
+      <p class="ph-title" id="phTitle">Questions for the Q&amp;A</p>
+      <p class="ph-sub" id="phSub"></p>
+    </div>
+
+    <ol class="list" id="list"></ol>
+
+    <div class="empty" id="empty" hidden>
+      <strong id="emptyTitle">No new questions</strong>
+      <span id="emptyBody">They will appear here as soon as someone sends one.</span>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+<div class="sr-only" id="announce" aria-live="polite"></div>
+
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/desk.js"></script>
+</body>
+</html>

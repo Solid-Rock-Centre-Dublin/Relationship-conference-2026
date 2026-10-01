@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q&amp;A big screen</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#5a0b1d">
+<link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Montserrat:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@1,800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/screen.css">
+</head>
+<body class="page-screen">
+
+<main class="stage" id="stage">
+  <div class="backdrop" aria-hidden="true">
+    <img class="backdrop-photo" src="assets/couple-wide.jpg" alt="" width="920" height="1000">
+    <img class="backdrop-mark" src="assets/logo-watermark.png" alt="" width="720" height="720">
+  </div>
+
+  <div class="content">
+    <header>
+      <p class="kicker" id="kicker">Relationship conference</p>
+      <h1 class="mark">Before <span class="amp">&amp;</span> After</h1>
+      <p class="say">You say</p>
+      <p class="ido">&ldquo;I Do&rdquo;</p>
+    </header>
+
+    <section class="ask">
+      <div class="qr-card" id="qr"></div>
+      <div class="ask-copy">
+        <h2 id="askTitle">Scan to ask your question</h2>
+        <p class="sub" id="askSub">Point your phone camera at the code, type your question and send it.</p>
+        <p class="url" id="url"></p>
+        <p class="when" id="when"></p>
+      </div>
+    </section>
+  </div>
+
+  <button class="fs-btn" id="fs" type="button">Fullscreen</button>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/qr.js"></script>
+<script src="js/screen.js"></script>
+</body>
+</html>

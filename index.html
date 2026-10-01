@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ask a question</title>
+<meta name="description" content="Send your question for the Q&A.">
+<meta name="theme-color" content="#5a0b1d">
+<link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Montserrat:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@1,800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-submit">
+
+<div class="backdrop" aria-hidden="true">
+  <img class="backdrop-photo" src="assets/couple.jpg" alt="" width="820" height="1080">
+  <img class="backdrop-mark" src="assets/logo-watermark.png" alt="" width="720" height="720">
+</div>
+
+<div class="demo-flag" id="demoFlag" hidden>Preview mode: questions stay on this device until Firebase is set up in js/config.js.</div>
+
+<main class="shell">
+  <header class="lockup">
+    <p class="org" id="org">Solid Rock Centre Dublin</p>
+    <p class="brand" id="brand">Before &amp; After You Say &ldquo;I Do&rdquo;</p>
+    <h1>Ask the speakers</h1>
+    <p class="lead">Send your question and we will read it out during the Q&amp;A. Your name is optional.</p>
+  </header>
+
+  <section class="panel" id="formPanel">
+    <form id="askForm" novalidate>
+      <div class="field">
+        <label for="q">Your question</label>
+        <textarea id="q" name="question" rows="5" placeholder="Type your question here" required></textarea>
+        <div class="field-foot"><span class="count" id="count">0 / 400</span></div>
+      </div>
+
+      <fieldset class="field chips" id="toGroup">
+        <legend>Who is it for?</legend>
+        <div class="chip-row" id="chipRow"></div>
+      </fieldset>
+
+      <div class="field">
+        <label for="name">Your name <span class="opt">(optional)</span></label>
+        <input id="name" name="name" type="text" maxlength="60" autocomplete="given-name" placeholder="Leave blank to stay anonymous">
+      </div>
+
+      <div class="hp" aria-hidden="true">
+        <label>Website <input type="text" name="website" id="website" tabindex="-1" autocomplete="off"></label>
+      </div>
+
+      <p class="note" id="note" role="alert" hidden></p>
+      <button class="btn" id="send" type="submit">Send question</button>
+    </form>
+  </section>
+
+  <section class="panel result" id="donePanel" hidden>
+    <svg class="tick" viewBox="0 0 52 52" aria-hidden="true">
+      <circle cx="26" cy="26" r="25" fill="#ff6b73"/>
+      <path d="M14 27l8 8 16-17" fill="none" stroke="#2b0711" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h2 id="doneTitle" tabindex="-1">Question sent</h2>
+    <p>Thank you. We will read as many questions as time allows.</p>
+    <p class="echo" id="echo"></p>
+    <button class="btn" id="again" type="button">Ask another question</button>
+  </section>
+
+  <section class="panel result" id="closedPanel" hidden>
+    <h2>Questions are closed</h2>
+    <p>We are not taking any more questions right now. Thank you for taking part.</p>
+  </section>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/submit.js"></script>
+</body>
+</html>
