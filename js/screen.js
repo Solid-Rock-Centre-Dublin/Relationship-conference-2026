@@ -3,17 +3,35 @@
 
   var C = QA.config, ev = C.event || {};
   var $ = function (id) { return document.getElementById(id); };
-  var stage = $("stage");
+  var stage = $("stage"), content = $("content"), inner = $("inner");
 
   /* ---------- text from config ---------- */
-  if (ev.kicker) $("kicker").textContent = ev.kicker;
-  $("when").textContent = [ev.when, ev.org].filter(Boolean).join(", ");
+  $("kicker").textContent = [ev.kicker, ev.when].filter(Boolean).join(", ") || $("kicker").textContent;
 
-  /* ---------- keep the big headline inside its column in any font ---------- */
-  var fitTargets = [document.querySelector(".mark"), document.querySelector(".ido")];
+  /* ---------- QR code and web address ---------- */
+  // The folder this site is served from, so the code stays short and easy to scan.
+  var target = C.submitUrl || new URL("./", window.location.href).href;
+  var shown = C.displayUrl || target.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
+  // Let a long address wrap after dots and slashes instead of in the middle of a word.
+  shown.split(/([./-])/).forEach(function (part) {
+    $("url").appendChild(document.createTextNode(part));
+    if (/^[./-]$/.test(part)) $("url").appendChild(document.createElement("wbr"));
+  });
+
+  try {
+    $("qr").innerHTML = window.QRCodeSVG(target);
+  } catch (err) {
+    $("qr").textContent = "The address is too long for the QR code. Use a shorter submitUrl in js/config.js.";
+  }
+
+  /* ---------- fit everything inside the window, whatever the size or font ---------- */
+  var headlines = [document.querySelector(".mark"), document.querySelector(".ido")];
+
+  // 1. Stop the big headline lines running past the column.
   function fitHeadlines() {
-    var max = document.querySelector(".content").clientWidth;
-    fitTargets.forEach(function (n) {
+    var max = content.clientWidth;
+    headlines.forEach(function (n) {
       n.style.fontSize = "";
       var size = parseFloat(getComputedStyle(n).fontSize);
       while (n.scrollWidth > max && size > 12) {
@@ -22,20 +40,39 @@
       }
     });
   }
-  fitHeadlines();
-  window.addEventListener("resize", fitHeadlines);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHeadlines);
 
-  /* ---------- QR code ---------- */
-  // The folder this site is served from, so the code stays short and easy to scan.
-  var target = C.submitUrl || new URL("./", window.location.href).href;
-  var shown = C.displayUrl || target.replace(/^https?:\/\//, "").replace(/\/$/, "");
-  $("url").textContent = shown;
+  // 2. If the whole block is still taller or wider than its box, scale it down evenly.
+  function fitContent() {
+    inner.style.transform = "";
+    inner.style.width = "";
+    inner.style.height = "";
+    if (getComputedStyle(content).position !== "absolute") return; // stacked layout scrolls instead
+    var boxW = content.clientWidth, boxH = content.clientHeight;
+    var s = Math.min(1, boxW / inner.scrollWidth, boxH / inner.scrollHeight);
+    if (s < 0.995) {
+      inner.style.width = boxW / s + "px";
+      inner.style.height = boxH / s + "px";
+      inner.style.transform = "scale(" + s + ")";
+    }
+  }
 
-  try {
-    $("qr").innerHTML = window.QRCodeSVG(target);
-  } catch (err) {
-    $("qr").textContent = "The address is too long for the QR code. Use a shorter submitUrl in js/config.js.";
+  var pending = false;
+  function fit() {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(function () {
+      pending = false;
+      fitHeadlines();
+      fitContent();
+    });
+  }
+
+  fit();
+  window.addEventListener("resize", fit);
+  window.addEventListener("load", fit);
+  if (document.fonts) {
+    if (document.fonts.ready) document.fonts.ready.then(fit);
+    if (document.fonts.addEventListener) document.fonts.addEventListener("loadingdone", fit);
   }
 
   /* ---------- open or closed ---------- */
@@ -45,6 +82,7 @@
     $("askSub").textContent = open
       ? "Point your phone camera at the code, type your question and send it."
       : "Thank you for your questions.";
+    fit();
   });
 
   /* ---------- fullscreen button and key ---------- */
