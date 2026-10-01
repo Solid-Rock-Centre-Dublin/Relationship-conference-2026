@@ -1,7 +1,11 @@
 /* ==========================================================
-   Big screen page. Everything is sized in --u, which is 1% of the
-   width of a 16:9 canvas, so the layout scales to any projector
-   or TV without reflowing.
+   Big screen page.
+
+   Everything is sized in --u, which is 1% of the width of a 16:9
+   canvas that fits inside the window. The page also measures
+   itself (js/screen.js) and shrinks its content uniformly if the
+   web address or fonts make it taller or wider than the window,
+   so nothing is ever cut off.
    ========================================================== */
 
 .page-screen { overflow: hidden; }
@@ -31,37 +35,43 @@
   opacity: 0.06;
 }
 
+/* The box that holds the text and QR code. The inner block is what gets scaled to fit. */
 .content {
   position: absolute;
   left: calc(var(--u) * 5.5);
-  top: calc(var(--u) * 4.2);
-  bottom: calc(var(--u) * 3.6);
+  top: calc(var(--u) * 3.6);
   width: calc(var(--u) * 48);
+  height: calc(100% - var(--u) * 6.8);
+}
+.content-inner {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: calc(var(--u) * 2.5);
+  height: 100%;
+  transform-origin: 0 0;
 }
 
 /* Headline block, echoing the flyer */
-.page-screen .kicker { color: var(--blush); font-size: calc(var(--u) * 1.45); font-weight: 600; letter-spacing: 0.05em; }
+.page-screen .kicker { color: var(--blush); font-size: calc(var(--u) * 1.3); font-weight: 600; letter-spacing: 0.04em; }
 .page-screen .mark {
-  margin-top: calc(var(--u) * 0.6);
+  margin-top: calc(var(--u) * 0.5);
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: calc(var(--u) * 7.4);
+  font-size: calc(var(--u) * 6.6);
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
   text-shadow: 0 calc(var(--u) * 0.2) calc(var(--u) * 2) rgba(46, 5, 16, 0.5);
 }
 .page-screen .mark .amp { color: var(--coral); }
-.page-screen .say { margin-top: calc(var(--u) * 1.1); font-size: calc(var(--u) * 1.5); font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--blush); }
+.page-screen .say { margin-top: calc(var(--u) * 0.9); font-size: calc(var(--u) * 1.3); font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--blush); }
 .page-screen .ido {
   margin-top: calc(var(--u) * 0.2);
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 800;
-  font-size: calc(var(--u) * 9);
+  font-size: calc(var(--u) * 7.6);
   line-height: 1.05;
   color: var(--coral);
   text-transform: uppercase;
@@ -70,7 +80,7 @@
 }
 
 /* QR and call to action */
-.ask { display: flex; align-items: flex-end; gap: calc(var(--u) * 2.6); }
+.ask { display: flex; align-items: flex-end; gap: calc(var(--u) * 2.4); }
 
 .qr-card {
   flex: none;
@@ -83,24 +93,23 @@
 }
 .qr-card svg { display: block; width: 100%; height: 100%; }
 
-.ask-copy { min-width: 0; padding-bottom: calc(var(--u) * 0.2); }
+.ask-copy { min-width: 0; }
 .ask-copy h2 {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: calc(var(--u) * 3.9);
+  font-size: calc(var(--u) * 3.4);
   line-height: 1.02;
   text-transform: uppercase;
   text-wrap: balance;
 }
-.ask-copy .sub { margin-top: calc(var(--u) * 1.1); font-size: calc(var(--u) * 1.4); line-height: 1.45; color: var(--blush); }
+.ask-copy .sub { margin-top: calc(var(--u) * 1); font-size: calc(var(--u) * 1.3); line-height: 1.45; color: var(--blush); }
 .ask-copy .url {
-  margin-top: calc(var(--u) * 1.3);
-  font-size: calc(var(--u) * 1.4);
+  margin-top: calc(var(--u) * 1.2);
+  font-size: calc(var(--u) * 1.3);
+  line-height: 1.4;
   font-weight: 700;
   color: var(--ivory);
-  overflow-wrap: anywhere;
 }
-.ask-copy .when { margin-top: calc(var(--u) * 0.6); font-size: calc(var(--u) * 1.25); font-weight: 500; color: var(--blush); }
 
 /* Questions closed */
 .is-closed .qr-card { opacity: 0.18; filter: grayscale(1); }
@@ -125,9 +134,19 @@
 .show-ui .fs-btn { opacity: 1; pointer-events: auto; }
 .page-screen.cursor-hidden { cursor: none; }
 
+/* Tall or square windows (a phone, a portrait monitor): stack and scroll instead */
 @media (max-aspect-ratio: 1/1) {
   .page-screen { overflow: auto; }
   .stage { --u: 1.9vw; height: auto; min-height: 100vh; }
-  .content { position: relative; inset: auto; width: auto; margin: 0 calc(var(--u) * 4); padding: calc(var(--u) * 4) 0; gap: calc(var(--u) * 6); }
+  .page-screen .backdrop-photo {
+    width: 100%;
+    height: 55vh;
+    opacity: 0.4;
+    object-position: 50% 15%;
+    -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 30%, transparent 100%);
+  }
+  .content { position: relative; inset: auto; width: auto; height: auto; margin: 0 calc(var(--u) * 4); padding: calc(var(--u) * 4) 0; }
+  .content-inner { height: auto; gap: calc(var(--u) * 6); }
   .page-screen .mark { white-space: normal; }
 }
