@@ -18,7 +18,7 @@ service cloud.firestore {
 
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email in ['you@example.com'];
+        && request.auth.token.email in ['media@solidrockdublin.org'];
     }
 
     match /questions/{id} {
