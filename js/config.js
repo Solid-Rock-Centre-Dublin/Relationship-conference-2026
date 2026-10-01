@@ -10,10 +10,10 @@
 */
 window.QA_CONFIG = {
   firebase: {
-    apiKey: "PASTE_API_KEY",
-    authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
-    projectId: "PASTE_PROJECT_ID",
-    appId: "PASTE_APP_ID"
+    apiKey: "AIzaSyCB3cZrgZKenFLBhawQZCZdaU74GuWI6qk",
+    authDomain: "srrc-2026.firebaseapp.com",
+    projectId: "srrc-2026",
+    appId: "1:977996790367:web:cb2303274fb2655570f9ea"
   },
 
   event: {
